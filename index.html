@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rajukumar & Mugdha | Wedding Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Great+Vibes&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+<audio id="bg-music" src="music.mp3" loop autoplay playsinline preload="auto"></audio>
+<script>
+  (function () {
+    const music = document.getElementById('bg-music');
+    music.volume = 0.35;
+
+    function playWithSound() {
+      music.muted = false;
+      return music.play();
+    }
+
+    function startMusic() {
+      playWithSound().catch(function () {
+        music.muted = true;
+        music.play().then(function () {
+          music.muted = false;
+        }).catch(function () {});
+      });
+    }
+
+    startMusic();
+    music.addEventListener('loadeddata', startMusic);
+    music.addEventListener('canplay', startMusic);
+    document.addEventListener('DOMContentLoaded', startMusic);
+    window.addEventListener('load', startMusic);
+
+    var tries = 0;
+    var timer = setInterval(function () {
+      if (!music.paused && !music.muted) {
+        clearInterval(timer);
+        return;
+      }
+      if (tries++ > 20) {
+        clearInterval(timer);
+        return;
+      }
+      startMusic();
+    }, 400);
+
+    function unlockOnInteraction() {
+      music.muted = false;
+      music.play().catch(function () {});
+    }
+    document.addEventListener('click', unlockOnInteraction, { once: true, capture: true });
+    document.addEventListener('touchstart', unlockOnInteraction, { once: true, capture: true });
+  })();
+</script>
+<style>
+  :root {
+    --gold: #c9933a;
+    --gold-light: #e8c06a;
+    --gold-dark: #8b6520;
+    --cream: #f3e8cf;
+    --cream-mask: #f0e6cc;
+    --deep-brown: #3d1f00;
+    --maroon: #7b1c1c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a0a00;
+    font-family: 'Cormorant Garamond', serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  body.invite-open {
+    overflow: hidden;
+  }
+
+  /* ─── ENVELOPE SCREEN ─── */
+  #envelope-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #0a0400;
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  #envelope-screen.open {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.04);
+  }
+
+  .env-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .env-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 45%, rgba(201,147,58,0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(123,28,28,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(123,28,28,0.1) 0%, transparent 55%),
+      radial-gradient(ellipse at center, #2a1400 0%, #0d0500 70%, #050200 100%);
+  }
+
+  .env-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23e8c06a' stroke-width='0.6'%3E%3Ccircle cx='60' cy='60' r='28'/%3E%3Ccircle cx='60' cy='60' r='18'/%3E%3Cpath d='M60 32 L60 88 M32 60 L88 60 M40 40 L80 80 M80 40 L40 80'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 90px 90px;
+    animation: pattern-drift 40s linear infinite;
+  }
+
+  @keyframes pattern-drift {
+    from { background-position: 0 0; }
+    to   { background-position: 90px 90px; }
+  }
+
+  .env-corner {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .env-corner svg { width: 100%; height: 100%; }
+  .env-corner.tl { top: 16px; left: 16px; }
+  .env-corner.tr { top: 16px; right: 16px; transform: scaleX(-1); }
+  .env-corner.bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
+  .env-corner.br { bottom: 16px; right: 16px; transform: scale(-1); }
+
+  .env-sparkle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    box-shadow: 0 0 6px var(--gold-light);
+    animation: sparkle 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50%       { opacity: 0.9; transform: scale(1.2); }
+  }
+
+  .envelope-wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 20px 24px;
+    animation: env-enter 1.2s ease forwards;
+  }
+
+  @keyframes env-enter {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .env-ganesh {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78rem;
+    color: var(--gold-light);
+    letter-spacing: 0.35em;
+    opacity: 0.75;
+    margin-bottom: 14px;
+  }
+
+  .env-lotus {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    animation: lotus-glow 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px rgba(201,147,58,0.5));
+  }
+
+  @keyframes lotus-glow {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50%       { transform: scale(1.08); opacity: 1; }
+  }
+
+  .envelope-title {
+    font-family: 'Cinzel', serif;
+    color: var(--gold-light);
+    font-size: 0.72rem;
+    letter-spacing: 0.55em;
+    text-transform: uppercase;
+    opacity: 0.9;
+    margin-bottom: 18px;
+  }
+
+  .env-couple {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.4rem, 9vw, 3.2rem);
+    color: var(--gold-light);
+    line-height: 1.1;
+    text-align: center;
+    text-shadow: 0 2px 20px rgba(201,147,58,0.4);
+    margin-bottom: 6px;
+  }
+
+  .env-couple span {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin: 0 6px;
+    vertical-align: middle;
+  }
+
+  .env-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(232,192,106,0.8);
+    letter-spacing: 0.15em;
+    margin-bottom: 22px;
+  }
+
+  .env-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    width: min(220px, 70vw);
+  }
+
+  .env-divider::before,
+  .env-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .env-divider span {
+    color: var(--gold);
+    font-size: 0.55rem;
+    animation: spin-slow 8s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .seal-container {
+    position: relative;
+    cursor: pointer;
+    width: 168px;
+    height: 168px;
+    margin-bottom: 30px;
+    animation: seal-float 4s ease-in-out infinite;
+  }
+
+  @keyframes seal-float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+  }
+
+  .seal-container:hover { animation-play-state: paused; }
+  .seal-container:hover .seal {
+    transform: scale(1.06);
+    box-shadow: 0 0 60px rgba(201,147,58,0.7), 0 0 100px rgba(201,147,58,0.25), inset 0 2px 8px rgba(255,220,120,0.5);
+  }
+
+  .seal-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(201,147,58,0.6);
+    animation: pulse-ring 3s ease-in-out infinite;
+  }
+
+  .seal-ring:nth-child(2) { animation-delay: 1s; }
+  .seal-ring:nth-child(3) { animation-delay: 2s; inset: -12px; opacity: 0.3; }
+
+  @keyframes pulse-ring {
+    0%   { transform: scale(1); opacity: 0.6; }
+    70%  { transform: scale(1.35); opacity: 0; }
+    100% { transform: scale(1.35); opacity: 0; }
+  }
+
+  .seal-outer {
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    border: 2px dashed rgba(232,192,106,0.25);
+    animation: spin-slow 20s linear infinite reverse;
+  }
+
+  .seal {
+    position: absolute;
+    inset: 14px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 30%, #f0d080 0%, #d4a040 25%, #a07020 60%, #6a4810 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow:
+      0 0 40px rgba(201,147,58,0.55),
+      0 8px 24px rgba(0,0,0,0.4),
+      inset 0 3px 8px rgba(255,230,150,0.5),
+      inset 0 -4px 10px rgba(80,50,10,0.4);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border: 3px solid rgba(180,120,30,0.8);
+    overflow: hidden;
+  }
+
+  .seal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .seal::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,240,180,0.15) 50%, transparent 60%);
+    animation: seal-shimmer 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes seal-shimmer {
+    0%, 100% { transform: translateX(-30%) rotate(25deg); }
+    50%       { transform: translateX(30%) rotate(25deg); }
+  }
+
+  .seal-ganesha {
+    font-size: 1.8rem;
+    line-height: 1;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+    position: relative;
+    z-index: 1;
+  }
+
+  .seal-text {
+    font-family: 'Cinzel', serif;
+    font-size: 0.42rem;
+    letter-spacing: 0.18em;
+    color: rgba(40,20,0,0.85);
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  .seal-monogram {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.7rem;
+    color: rgba(50,25,0,0.9);
+    line-height: 1;
+    margin-top: 2px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 1px 0 rgba(255,220,140,0.3);
+  }
+
+  .tap-hint {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold-light);
+    font-size: 0.92rem;
+    opacity: 0.8;
+    animation: hint-pulse 2.5s ease-in-out infinite;
+  }
+
+  .tap-line {
+    width: 36px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-light));
+  }
+
+  .tap-hint .tap-line:last-child {
+    background: linear-gradient(to left, transparent, var(--gold-light));
+  }
+
+  @keyframes hint-pulse {
+    0%, 100% { opacity: 0.8; }
+    50%       { opacity: 0.45; }
+  }
+
+  .env-petal {
+    position: absolute;
+    pointer-events: none;
+    font-size: 0.85rem;
+    opacity: 0;
+    animation: env-fall linear infinite;
+    z-index: 1;
+  }
+
+  @keyframes env-fall {
+    0%   { opacity: 0; transform: translateY(-10vh) rotate(0deg); }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.35; }
+    100% { opacity: 0; transform: translateY(110vh) rotate(360deg); }
+  }
+
+  /* ─── INVITE CARD (IMAGE UI) ─── */
+  #invite-card {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 10px 12px;
+    animation: fadeInUp 1s ease forwards;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #invite-card.open {
+    display: flex;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-frame {
+    width: 100%;
+    max-width: min(480px, calc((100vh - 20px) * 681 / 1024));
+    margin: 0 auto;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow:
+      0 24px 60px rgba(0,0,0,0.55),
+      0 0 0 1px rgba(201,147,58,0.25);
+  }
+
+  .card-image-wrap {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+  }
+
+  .card-image-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Mapped to venue line on invitation-card.png (681×1024) */
+  .venue-replace {
+    position: absolute;
+    top: 81.84%;
+    left: 4.5%;
+    right: 4.5%;
+    height: 3.91%;
+    background: #f4dbab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .venue-text {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: #635107;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* Floating petals */
+  .petal {
+    position: absolute;
+    pointer-events: none;
+    font-size: 0.9rem;
+    animation: fall linear infinite;
+    opacity: 0;
+    z-index: 4;
+  }
+
+  @keyframes fall {
+    0%   { opacity: 0; transform: translateY(-20px) rotate(0deg); }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { opacity: 0; transform: translateY(110vh) rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ ENVELOPE SCREEN ══════════════ -->
+<div id="envelope-screen">
+  <div class="env-bg">
+    <div class="env-glow"></div>
+    <div class="env-pattern"></div>
+    <div id="env-sparkles"></div>
+    <div id="env-petals"></div>
+  </div>
+
+  <div class="env-corner tl">
+    <svg viewBox="0 0 80 80" fill="none"><path d="M4 4 L4 40 Q4 4 40 4" stroke="#c9933a" stroke-width="1"/><circle cx="4" cy="4" r="2.5" fill="#c9933a"/><path d="M10 4 Q4 4 4 10" stroke="#c9933a" stroke-width="0.7"/></svg>
+  </div>
+  <div class="env-corner tr">
+    <svg viewBox="0 0 80 80" fill="none"><path d="M4 4 L4 40 Q4 4 40 4" stroke="#c9933a" stroke-width="1"/><circle cx="4" cy="4" r="2.5" fill="#c9933a"/><path d="M10 4 Q4 4 4 10" stroke="#c9933a" stroke-width="0.7"/></svg>
+  </div>
+  <div class="env-corner bl">
+    <svg viewBox="0 0 80 80" fill="none"><path d="M4 4 L4 40 Q4 4 40 4" stroke="#c9933a" stroke-width="1"/><circle cx="4" cy="4" r="2.5" fill="#c9933a"/></svg>
+  </div>
+  <div class="env-corner br">
+    <svg viewBox="0 0 80 80" fill="none"><path d="M4 4 L4 40 Q4 4 40 4" stroke="#c9933a" stroke-width="1"/><circle cx="4" cy="4" r="2.5" fill="#c9933a"/></svg>
+  </div>
+
+  <div class="envelope-wrap">
+    <div class="env-lotus">🪷</div>
+    <div class="env-ganesh">|| श्री गणेशाय नमः ||</div>
+    <div class="envelope-title">Wedding Invitation</div>
+    <div class="env-couple">Rajukumar <span>&</span> Mugdha</div>
+    <div class="env-date">6 July 2026</div>
+
+    <div class="env-divider"><span>✦</span></div>
+
+    <div class="seal-container" onclick="openInvite()">
+      <div class="seal-ring"></div>
+      <div class="seal-ring"></div>
+      <div class="seal-ring"></div>
+      <div class="seal-outer"></div>
+      <div class="seal">
+        <span class="seal-ganesha">🪔</span>
+        <span class="seal-monogram">R & M</span>
+        <span class="seal-text">Wed · 6 July 2026</span>
+      </div>
+    </div>
+
+    <div class="tap-hint">
+      <span class="tap-line"></span>
+      <span>tap the seal to open</span>
+      <span class="tap-line"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ INVITE CARD ══════════════ -->
+<div id="invite-card">
+  <div class="card-frame">
+    <div class="card-image-wrap">
+      <img src="invitation-card.png" alt="Rajukumar & Mugdha — Wedding Save the Date, 6 July 2026">
+      <div class="venue-replace" aria-label="Venue: The Ginger Airport Hotel">
+        <span class="venue-text">The Ginger Airport Hotel</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function initEnvelopeDecor() {
+    const sparkles = document.getElementById('env-sparkles');
+    const petals   = document.getElementById('env-petals');
+    if (!sparkles || !petals) return;
+
+    for (let i = 0; i < 24; i++) {
+      const s = document.createElement('div');
+      s.className = 'env-sparkle';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top  = Math.random() * 100 + '%';
+      s.style.animationDelay = (Math.random() * 3) + 's';
+      s.style.animationDuration = (2 + Math.random() * 2) + 's';
+      sparkles.appendChild(s);
+    }
+
+    const icons = ['🌸','🌼','✨','🏵️'];
+    for (let i = 0; i < 10; i++) {
+      const p = document.createElement('div');
+      p.className = 'env-petal';
+      p.textContent = icons[Math.floor(Math.random() * icons.length)];
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (8 + Math.random() * 10) + 's';
+      p.style.animationDelay = (Math.random() * 8) + 's';
+      p.style.fontSize = (0.6 + Math.random() * 0.7) + 'rem';
+      petals.appendChild(p);
+    }
+  })();
+
+  function openInvite() {
+    const envScreen = document.getElementById('envelope-screen');
+    const card      = document.getElementById('invite-card');
+
+    envScreen.classList.add('open');
+
+    setTimeout(() => {
+      envScreen.style.display = 'none';
+      card.classList.add('open');
+      document.body.classList.add('invite-open');
+      fitVenueText();
+      spawnPetals();
+    }, 800);
+  }
+
+  function fitVenueText() {
+    const wrap = document.querySelector('.card-image-wrap');
+    const text = document.querySelector('.venue-text');
+    const img  = document.querySelector('.card-image-wrap img');
+    if (!wrap || !text || !img) return;
+
+    const apply = () => {
+      const h = wrap.clientHeight;
+      let size = h * 0.0234;
+      text.style.fontSize = size + 'px';
+      while (text.scrollWidth > wrap.clientWidth * 0.9 && size > 7) {
+        size -= 0.25;
+        text.style.fontSize = size + 'px';
+      }
+    };
+
+    if (img.complete) apply();
+    else img.addEventListener('load', apply, { once: true });
+    window.addEventListener('resize', apply);
+  }
+
+  function spawnPetals() {
+    const petals = ['🌸','🌺','🌼','🏵️','✨'];
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.textContent = petals[Math.floor(Math.random() * petals.length)];
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (4 + Math.random() * 6) + 's';
+      p.style.animationDelay    = (Math.random() * 4) + 's';
+      p.style.fontSize          = (0.7 + Math.random() * 0.8) + 'rem';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 12000);
+    }
+  }
+</script>
+</body>
+</html>
